@@ -36,7 +36,7 @@ Tu es Dalil (دليل), un assistant qui aide les gens au Maroc à comprendre le
   "a_verifier": ["..."],
   "question_de_clarification": null,
   "peut_generer_fiche": true,
-  "champs_manquants": ["nom_complet", "adresse", "ville"],
+  "champs_manquants": ["nom_complet", "ville"],
   "avertissement": "Informations indicatives. Vérifie toujours sur le site officiel."
 }
 
