@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, ElementRef, computed, effect, inject, signal, viewChild } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
@@ -23,6 +23,9 @@ interface Message {
   texte: string;
   data?: DalilReponse;
 }
+
+// Prix à mettre en évidence : « 500 DH », « 75 DH », « 500 درهم »
+const PRIX = /(\d+(?:[.,]\d+)?\s?(?:DH|Dh|dh|درهم))/;
 
 @Component({
   selector: 'app-root',
@@ -52,6 +55,56 @@ export class App {
 
   // Historique envoyé au backend à chaque message
   private historique: { role: 'user' | 'assistant'; content: string }[] = [];
+
+  protected readonly exemples = [
+    'bghit nbdel passeport',
+    'chno khassni bach ndir CNIE ?',
+    'Comment obtenir un acte de naissance ?',
+    'كيف أجدد جواز السفر؟',
+  ];
+
+  // Défilement automatique vers le dernier message
+  private readonly zone = viewChild<ElementRef<HTMLElement>>('zone');
+
+  constructor() {
+    effect(() => {
+      this.messages();
+      this.envoiEnCours();
+      this.telechargementEnCours();
+      setTimeout(() => this.defiler());
+    });
+  }
+
+  private defiler() {
+    const zone = this.zone()?.nativeElement;
+    if (!zone) return;
+    const elements = zone.querySelectorAll('.fil > .message, .fil > .reponse, .fil > .chargement');
+    const dernier = elements[elements.length - 1];
+    // Une réponse de Dalil s'affiche depuis son début ; le reste défile jusqu'en bas
+    if (dernier?.classList.contains('reponse')) {
+      dernier.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      zone.scrollTo({ top: zone.scrollHeight, behavior: 'smooth' });
+    }
+  }
+
+  protected envoyerExemple(exemple: string) {
+    this.texte.set(exemple);
+    this.envoyer();
+  }
+
+  // Découpe un texte pour afficher les prix en évidence
+  protected segments(texte: string) {
+    return texte.split(PRIX).filter(Boolean).map((t) => ({ texte: t, prix: PRIX.test(t) }));
+  }
+
+  protected domaine(lien: string) {
+    try {
+      return new URL(lien).hostname.replace(/^www\./, '');
+    } catch {
+      return lien;
+    }
+  }
 
   async envoyer() {
     const message = this.texte().trim();

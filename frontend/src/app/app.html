@@ -1,83 +1,141 @@
-<main class="page">
-  <h1>Dalil</h1>
+<div class="app">
+  <!-- 1. En-tête -->
+  <header class="entete">
+    <div class="logo" aria-hidden="true">د</div>
+    <div>
+      <h1>Dalil <span class="nom-ar">دليل</span></h1>
+      <p class="sous-titre">Ton guide pour les démarches administratives au Maroc, en darija, français, arabe ou anglais.</p>
+    </div>
+  </header>
 
-  <p class="avertissement">Informations indicatives. Vérifie toujours sur le site officiel.</p>
-
-  <section class="messages">
-    @for (m of messages(); track $index) {
-      @if (m.data; as d) {
-        <div class="reponse" [attr.dir]="d.langue === 'ar' ? 'rtl' : null">
-          <div class="carte">
-            <p>{{ d.reponse }}</p>
-            @if (d.question_de_clarification) {
-              <p class="question">{{ d.question_de_clarification }}</p>
+  <!-- 2. Conversation -->
+  <main class="zone" #zone>
+    <div class="fil">
+      <!-- 3. Exemples avant le premier message -->
+      @if (!messages().length) {
+        <section class="accueil">
+          <p class="accueil-titre">Salam ! Pose ta question ou essaie un exemple :</p>
+          <div class="exemples">
+            @for (exemple of exemples; track exemple) {
+              <button type="button" class="exemple" (click)="envoyerExemple(exemple)"
+                [disabled]="envoiEnCours() || telechargementEnCours()">{{ exemple }}</button>
             }
           </div>
-
-          @if (d.documents?.length) {
-            <div class="carte">
-              <h2>Documents à préparer</h2>
-              <ul>
-                @for (doc of d.documents; track $index) {
-                  <li>{{ doc }}</li>
-                }
-              </ul>
-            </div>
-          }
-
-          @if (d.etapes?.length) {
-            <div class="carte">
-              <h2>Étapes</h2>
-              <ol>
-                @for (etape of d.etapes; track $index) {
-                  <li>{{ etape }}</li>
-                }
-              </ol>
-            </div>
-          }
-
-          @if (d.lien_officiel) {
-            <div class="carte">
-              <h2>Lien officiel</h2>
-              <a [href]="d.lien_officiel" target="_blank" rel="noopener">{{ d.lien_officiel }}</a>
-            </div>
-          }
-
-          @if (d.a_verifier?.length) {
-            <div class="carte a-verifier">
-              <h2>À vérifier</h2>
-              <ul>
-                @for (point of d.a_verifier; track $index) {
-                  <li>{{ point }}</li>
-                }
-              </ul>
-            </div>
-          }
-        </div>
-      } @else {
-        <div class="message" [class]="m.role">
-          <p>{{ m.texte }}</p>
-        </div>
+        </section>
       }
-    }
-    @if (envoiEnCours() || telechargementEnCours()) {
-      <p class="chargement">Dalil kaykteb...</p>
-    }
-  </section>
 
-  @if (derniereReponse()) {
-    <form class="fiche" (ngSubmit)="telechargerFiche()">
-      <input name="nomComplet" [(ngModel)]="nomComplet" placeholder="Nom complet" autocomplete="off" />
-      <input name="ville" [(ngModel)]="ville" placeholder="Ville" autocomplete="off" />
-      <button type="submit" [disabled]="!peutGenererFiche() || telechargementEnCours()">Télécharger ma fiche</button>
+      @for (m of messages(); track $index) {
+        @if (m.data; as d) {
+          <div class="reponse" [attr.dir]="d.langue === 'ar' ? 'rtl' : null">
+            <div class="carte carte-reponse">
+              <p>@for (s of segments(d.reponse); track $index) {<span [class.prix]="s.prix">{{ s.texte }}</span>}</p>
+              @if (d.question_de_clarification) {
+                <p class="question">{{ d.question_de_clarification }}</p>
+              }
+            </div>
+
+            @if (d.documents?.length) {
+              <div class="carte carte-documents">
+                <h2>
+                  <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm7 1.5V9h5.5M8 13h8M8 17h8" /></svg>
+                  Documents à préparer
+                </h2>
+                <ul>
+                  @for (doc of d.documents; track $index) {
+                    <li>@for (s of segments(doc); track $index) {<span [class.prix]="s.prix">{{ s.texte }}</span>}</li>
+                  }
+                </ul>
+              </div>
+            }
+
+            @if (d.etapes?.length) {
+              <div class="carte carte-etapes">
+                <h2>
+                  <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 5v2M3.5 11.5h1.5l-1.5 2H5M3.5 17h1.5v2h-1.5" /></svg>
+                  Étapes
+                </h2>
+                <ol>
+                  @for (etape of d.etapes; track $index) {
+                    <li>@for (s of segments(etape); track $index) {<span [class.prix]="s.prix">{{ s.texte }}</span>}</li>
+                  }
+                </ol>
+              </div>
+            }
+
+            @if (d.lien_officiel) {
+              <div class="carte carte-lien">
+                <h2>
+                  <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" /></svg>
+                  Lien officiel
+                </h2>
+                <a class="bouton-lien" [href]="d.lien_officiel" target="_blank" rel="noopener">
+                  Ouvrir {{ domaine(d.lien_officiel) }} <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+            }
+
+            @if (d.a_verifier?.length) {
+              <div class="carte a-verifier">
+                <h2>
+                  <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 20h20L12 3zm0 6v5m0 3v.5" /></svg>
+                  À vérifier
+                </h2>
+                <ul>
+                  @for (point of d.a_verifier; track $index) {
+                    <li>{{ point }}</li>
+                  }
+                </ul>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="message" [class]="m.role">
+            <p>{{ m.texte }}</p>
+          </div>
+        }
+      }
+
+      <!-- 4. Indicateur d'attente -->
+      @if (envoiEnCours() || telechargementEnCours()) {
+        <p class="chargement" aria-live="polite">
+          <span class="points" aria-hidden="true"><span></span><span></span><span></span></span>
+          Dalil kaykteb...
+        </p>
+      }
+
+      <!-- 6. Fiche Word -->
+      @if (derniereReponse()) {
+        <form class="fiche" (ngSubmit)="telechargerFiche()">
+          <h2>
+            <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v3h16v-3" /></svg>
+            Ma fiche Word
+          </h2>
+          <p class="fiche-aide">
+            @if (peutGenererFiche()) {
+              Une checklist à imprimer pour la dernière démarche. Nom et ville seulement, jamais de CIN.
+            } @else {
+              Disponible quand Dalil donne la liste des documents d'une démarche.
+            }
+          </p>
+          <div class="fiche-champs">
+            <input name="nomComplet" [(ngModel)]="nomComplet" placeholder="Nom complet" autocomplete="off" aria-label="Nom complet" />
+            <input name="ville" [(ngModel)]="ville" placeholder="Ville" autocomplete="off" aria-label="Ville" />
+            <button type="submit" [disabled]="!peutGenererFiche() || telechargementEnCours()">Télécharger ma fiche</button>
+          </div>
+          @if (ficheErreur()) {
+            <p class="fiche-erreur">{{ ficheErreur() }}</p>
+          }
+        </form>
+      }
+    </div>
+  </main>
+
+  <!-- Saisie + 7. avertissement fixe -->
+  <footer class="pied">
+    <form class="saisie" (ngSubmit)="envoyer()">
+      <input name="texte" [(ngModel)]="texte" placeholder="Écris ta question..." autocomplete="off" dir="auto" aria-label="Ta question" />
+      <button type="submit" [disabled]="envoiEnCours() || telechargementEnCours() || !texte().trim()">Envoyer</button>
     </form>
-    @if (ficheErreur()) {
-      <p class="fiche-erreur">{{ ficheErreur() }}</p>
-    }
-  }
-
-  <form class="saisie" (ngSubmit)="envoyer()">
-    <input name="texte" [(ngModel)]="texte" placeholder="Écris ta question..." autocomplete="off" />
-    <button type="submit" [disabled]="envoiEnCours() || telechargementEnCours() || !texte().trim()">Envoyer</button>
-  </form>
-</main>
+    <p class="avertissement">Informations indicatives. Vérifie toujours sur le site officiel.</p>
+  </footer>
+</div>

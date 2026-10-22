@@ -1,125 +1,387 @@
-.page {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 16px;
-  font-family: Arial, sans-serif;
+/* Palette : un seul vert (le même que la fiche Word), plus des tons neutres */
+:host {
+  --vert: #1b5e20;
+  --vert-clair: #e8f5e9;
+  --vert-moyen: #c8e6c9;
+  --texte: #1f2933;
+  --gris: #5f6b76;
+  --bordure: #e2e6e3;
+  --fond: #f5f7f5;
+  --bleu: #1565c0;
+  --bleu-clair: #e8f1fb;
+  --ambre: #a15c00;
+  --ambre-clair: #fff6e0;
+  --rouge: #b71c1c;
+  --rouge-clair: #fdecea;
+
+  position: fixed;
+  inset: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: var(--texte);
+  background: var(--fond);
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* 1. En-tête */
+.entete {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px max(16px, calc((100% - 760px) / 2));
+  background: var(--vert);
+  color: #fff;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 15%);
+}
+
+.logo {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--vert);
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+  font-weight: bold;
 }
 
 h1 {
-  color: #1b5e20;
-  margin-bottom: 4px;
+  margin: 0;
+  font-size: 22px;
 }
 
-.avertissement {
-  background: #fff8e1;
-  border: 1px solid #ffe082;
-  padding: 8px 12px;
-  border-radius: 6px;
+.nom-ar {
+  font-weight: normal;
+  opacity: 0.85;
+  margin-inline-start: 4px;
 }
 
-.messages {
+.sous-titre {
+  margin: 2px 0 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* 2. Conversation */
+.zone {
+  flex: 1;
+  overflow-y: auto;
+  scroll-padding-top: 12px;
+}
+
+.fil {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin: 16px 0;
+  gap: 12px;
 }
 
 .message {
-  padding: 8px 12px;
-  border-radius: 8px;
-  max-width: 85%;
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 16px;
   unicode-bidi: plaintext;
 }
 
 .message p {
-  margin: 4px 0;
+  margin: 0;
   white-space: pre-wrap;
 }
 
 .user {
   align-self: flex-end;
-  background: #e8f5e9;
-}
-
-.assistant {
-  align-self: flex-start;
-  background: #f1f1f1;
-}
-
-.reponse {
-  align-self: flex-start;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 85%;
-}
-
-.carte {
-  background: #f1f1f1;
-  border-radius: 8px;
-  padding: 8px 12px;
-}
-
-.carte h2 {
-  color: #1b5e20;
-  font-size: 16px;
-  margin: 4px 0;
-}
-
-.carte p {
-  margin: 4px 0;
-  white-space: pre-wrap;
-}
-
-.carte li {
-  margin: 4px 0;
-}
-
-.carte .question {
-  font-weight: bold;
-}
-
-.a-verifier {
-  background: #fff8e1;
+  background: var(--vert);
+  color: #fff;
+  border-end-end-radius: 4px;
 }
 
 .erreur {
   align-self: flex-start;
-  background: #ffebee;
-  color: #b71c1c;
+  background: var(--rouge-clair);
+  color: var(--rouge);
+  border: 1px solid #f5c2bd;
+  border-end-start-radius: 4px;
 }
 
-.fiche {
+/* 3. Accueil et exemples */
+.accueil {
+  text-align: center;
+  padding: 24px 0 8px;
+}
+
+.accueil-titre {
+  color: var(--gris);
+  margin: 0 0 12px;
+}
+
+.exemples {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
-  margin-bottom: 12px;
-  padding: 8px;
-  border: 1px solid #c8e6c9;
+}
+
+.exemple {
+  border: 1px solid var(--vert-moyen);
+  background: #fff;
+  color: var(--vert);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  unicode-bidi: plaintext;
+}
+
+.exemple:hover:not(:disabled) {
+  background: var(--vert-clair);
+}
+
+/* 4. Indicateur d'attente */
+.chargement {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 8px 14px;
+  background: #fff;
+  border: 1px solid var(--bordure);
+  border-radius: 16px;
+  color: var(--gris);
+  font-style: italic;
+}
+
+.points {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.points span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--vert);
+  animation: rebond 1s infinite ease-in-out;
+}
+
+.points span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.points span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes rebond {
+  0%, 80%, 100% { opacity: 0.3; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-3px); }
+}
+
+/* 5. Cartes de réponse */
+.reponse {
+  align-self: flex-start;
+  width: 88%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.carte {
+  background: #fff;
+  border: 1px solid var(--bordure);
+  border-inline-start: 4px solid var(--accent, var(--vert));
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.carte p {
+  margin: 0;
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+.carte h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+  font-size: 15px;
+  color: var(--accent, var(--vert));
+}
+
+.icone {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  padding: 3px;
+  border-radius: 6px;
+  background: var(--accent-clair, var(--vert-clair));
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.carte ul,
+.carte ol {
+  margin: 0;
+  padding-inline-start: 22px;
+}
+
+.carte li {
+  margin: 4px 0;
+  line-height: 1.45;
+}
+
+.carte-reponse {
+  border-start-start-radius: 4px;
+}
+
+.carte-reponse .question {
+  margin-top: 8px;
+  font-weight: 600;
+  color: var(--vert);
+}
+
+.carte-documents {
+  --accent: var(--bleu);
+  --accent-clair: var(--bleu-clair);
+}
+
+.carte-etapes {
+  --accent: var(--vert);
+  --accent-clair: var(--vert-clair);
+}
+
+.carte-etapes li::marker {
+  color: var(--vert);
+  font-weight: bold;
+}
+
+.carte-lien {
+  --accent: var(--gris);
+  --accent-clair: #eef0f2;
+}
+
+.a-verifier {
+  --accent: var(--ambre);
+  --accent-clair: var(--ambre-clair);
+  background: var(--ambre-clair);
+}
+
+.prix {
+  font-weight: bold;
+  color: var(--vert);
+  background: var(--vert-clair);
+  border-radius: 4px;
+  padding: 0 3px;
+  white-space: nowrap;
+}
+
+.bouton-lien {
+  display: inline-block;
+  background: var(--vert);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 16px;
   border-radius: 8px;
 }
 
-.fiche input {
-  flex: 1;
-  min-width: 140px;
-  padding: 8px;
-  font-size: 14px;
+.bouton-lien:hover {
+  filter: brightness(1.15);
 }
 
-.fiche button {
-  padding: 8px 12px;
+/* 6. Fiche Word */
+.fiche {
+  background: #fff;
+  border: 1px solid var(--vert-moyen);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.fiche h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 15px;
+  color: var(--vert);
+}
+
+.fiche-aide {
+  margin: 4px 0 10px;
+  font-size: 13px;
+  color: var(--gris);
+}
+
+.fiche-champs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.fiche-champs input {
+  flex: 1 1 160px;
+  min-width: 0;
 }
 
 .fiche-erreur {
-  color: #b71c1c;
-  margin-top: 0;
+  margin: 8px 0 0;
+  color: var(--rouge);
+  font-size: 14px;
 }
 
-.chargement {
-  align-self: flex-start;
-  color: #666;
-  font-style: italic;
-  margin: 0;
+/* Champs et boutons */
+input,
+button {
+  font-family: inherit;
+}
+
+input {
+  padding: 10px 12px;
+  font-size: 16px;
+  border: 1px solid #cfd6d1;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--texte);
+}
+
+input:focus {
+  outline: 2px solid var(--vert-moyen);
+  border-color: var(--vert);
+}
+
+form button {
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  background: var(--vert);
+  color: #fff;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Saisie et 7. avertissement */
+.pied {
+  background: #fff;
+  border-top: 1px solid var(--bordure);
+  padding: 10px max(16px, calc((100% - 760px) / 2)) 6px;
 }
 
 .saisie {
@@ -129,11 +391,43 @@ h1 {
 
 .saisie input {
   flex: 1;
-  padding: 8px;
-  font-size: 16px;
+  min-width: 0;
 }
 
-.saisie button {
-  padding: 8px 16px;
-  font-size: 16px;
+.avertissement {
+  margin: 6px 0 0;
+  text-align: center;
+  font-size: 12px;
+  color: var(--gris);
+}
+
+/* 8. Mobile */
+@media (max-width: 600px) {
+  .entete {
+    padding: 10px 12px;
+  }
+
+  .sous-titre {
+    font-size: 12px;
+  }
+
+  .fil {
+    padding: 12px;
+  }
+
+  .message {
+    max-width: 88%;
+  }
+
+  .reponse {
+    width: 100%;
+  }
+
+  .pied {
+    padding: 8px 12px 4px;
+  }
+
+  .fiche-champs button {
+    flex: 1 1 100%;
+  }
 }
