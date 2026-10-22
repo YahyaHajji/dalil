@@ -8,10 +8,10 @@ interface DalilReponse {
   langue: string;
   demarche_id: string;
   reponse: string;
-  documents: string[];
-  etapes: string[];
+  documents?: string[];
+  etapes?: string[];
   lien_officiel: string | null;
-  a_verifier: string[];
+  a_verifier?: string[];
   question_de_clarification: string | null;
   peut_generer_fiche: boolean;
   champs_manquants: string[];

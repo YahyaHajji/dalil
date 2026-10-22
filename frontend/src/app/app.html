@@ -5,12 +5,60 @@
 
   <section class="messages">
     @for (m of messages(); track $index) {
-      <div class="message" [class]="m.role">
-        <p>{{ m.texte }}</p>
-        @if (m.data?.question_de_clarification) {
-          <p>{{ m.data?.question_de_clarification }}</p>
-        }
-      </div>
+      @if (m.data; as d) {
+        <div class="reponse" [attr.dir]="d.langue === 'ar' ? 'rtl' : null">
+          <div class="carte">
+            <p>{{ d.reponse }}</p>
+            @if (d.question_de_clarification) {
+              <p class="question">{{ d.question_de_clarification }}</p>
+            }
+          </div>
+
+          @if (d.documents?.length) {
+            <div class="carte">
+              <h2>Documents à préparer</h2>
+              <ul>
+                @for (doc of d.documents; track $index) {
+                  <li>{{ doc }}</li>
+                }
+              </ul>
+            </div>
+          }
+
+          @if (d.etapes?.length) {
+            <div class="carte">
+              <h2>Étapes</h2>
+              <ol>
+                @for (etape of d.etapes; track $index) {
+                  <li>{{ etape }}</li>
+                }
+              </ol>
+            </div>
+          }
+
+          @if (d.lien_officiel) {
+            <div class="carte">
+              <h2>Lien officiel</h2>
+              <a [href]="d.lien_officiel" target="_blank" rel="noopener">{{ d.lien_officiel }}</a>
+            </div>
+          }
+
+          @if (d.a_verifier?.length) {
+            <div class="carte a-verifier">
+              <h2>À vérifier</h2>
+              <ul>
+                @for (point of d.a_verifier; track $index) {
+                  <li>{{ point }}</li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="message" [class]="m.role">
+          <p>{{ m.texte }}</p>
+        </div>
+      }
     }
   </section>
 
