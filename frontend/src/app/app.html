@@ -62,6 +62,17 @@
     }
   </section>
 
+  @if (derniereReponse()) {
+    <form class="fiche" (ngSubmit)="telechargerFiche()">
+      <input name="nomComplet" [(ngModel)]="nomComplet" placeholder="Nom complet" autocomplete="off" />
+      <input name="ville" [(ngModel)]="ville" placeholder="Ville" autocomplete="off" />
+      <button type="submit" [disabled]="!peutGenererFiche() || telechargementEnCours()">Télécharger ma fiche</button>
+    </form>
+    @if (ficheErreur()) {
+      <p class="fiche-erreur">{{ ficheErreur() }}</p>
+    }
+  }
+
   <form class="saisie" (ngSubmit)="envoyer()">
     <input name="texte" [(ngModel)]="texte" placeholder="Écris ta question..." autocomplete="off" />
     <button type="submit" [disabled]="envoiEnCours() || !texte().trim()">Envoyer</button>

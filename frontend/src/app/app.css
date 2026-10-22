@@ -89,6 +89,32 @@ h1 {
   color: #b71c1c;
 }
 
+.fiche {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 8px;
+  border: 1px solid #c8e6c9;
+  border-radius: 8px;
+}
+
+.fiche input {
+  flex: 1;
+  min-width: 140px;
+  padding: 8px;
+  font-size: 14px;
+}
+
+.fiche button {
+  padding: 8px 12px;
+}
+
+.fiche-erreur {
+  color: #b71c1c;
+  margin-top: 0;
+}
+
 .saisie {
   display: flex;
   gap: 8px;

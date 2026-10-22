@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
@@ -37,6 +37,19 @@ export class App {
   protected readonly texte = signal('');
   protected readonly envoiEnCours = signal(false);
 
+  // Fiche Word : basée sur la dernière réponse de Dalil
+  protected readonly nomComplet = signal('');
+  protected readonly ville = signal('');
+  protected readonly ficheErreur = signal('');
+  protected readonly telechargementEnCours = signal(false);
+  protected readonly derniereReponse = computed(
+    () => [...this.messages()].reverse().find((m) => m.data)?.data
+  );
+  protected readonly peutGenererFiche = computed(() => {
+    const d = this.derniereReponse();
+    return !!d?.peut_generer_fiche && !!d.documents?.length;
+  });
+
   // Historique envoyé au backend à chaque message
   private historique: { role: 'user' | 'assistant'; content: string }[] = [];
 
@@ -63,6 +76,42 @@ export class App {
       this.messages.update((m) => [...m, { role: 'erreur', texte: erreur }]);
     } finally {
       this.envoiEnCours.set(false);
+    }
+  }
+
+  async telechargerFiche() {
+    const reponse = this.derniereReponse();
+    if (!reponse || !this.peutGenererFiche() || this.telechargementEnCours()) return;
+
+    this.ficheErreur.set('');
+    if (!this.nomComplet().trim() || !this.ville().trim()) {
+      this.ficheErreur.set('Écris ton nom complet et ta ville pour créer la fiche.');
+      return;
+    }
+
+    this.telechargementEnCours.set(true);
+    try {
+      const fichier = await firstValueFrom(
+        this.http.post('/api/fiche', { nom_complet: this.nomComplet(), ville: this.ville(), reponse },
+          { responseType: 'blob' })
+      );
+      const url = URL.createObjectURL(fichier);
+      const lien = document.createElement('a');
+      lien.href = url;
+      lien.download = `fiche-dalil-${reponse.demarche_id}.docx`;
+      lien.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      // L'erreur du backend arrive sous forme de Blob (JSON)
+      let erreur = 'Impossible de créer la fiche.';
+      if (err instanceof HttpErrorResponse && err.error instanceof Blob) {
+        try {
+          erreur = JSON.parse(await err.error.text()).erreur || erreur;
+        } catch {}
+      }
+      this.ficheErreur.set(erreur);
+    } finally {
+      this.telechargementEnCours.set(false);
     }
   }
 }

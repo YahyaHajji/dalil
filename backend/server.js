@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import express from 'express';
 import Anthropic from '@anthropic-ai/sdk';
+import { genererFiche } from './fiche.js';
 
 const dossier = import.meta.dirname;
 
@@ -19,7 +20,7 @@ if (separateur === -1) throw new Error('system-prompt.md : ligne "---" introuvab
 const prompt = lignes.slice(separateur + 1).join('\n').trim();
 
 const demarches = fs.readFileSync(path.join(dossier, 'demarches.json'), 'utf8').trim();
-JSON.parse(demarches); // échoue au démarrage si la base est invalide
+const base = JSON.parse(demarches); // échoue au démarrage si la base est invalide
 
 const systeme = `${prompt}\n\n<base_demarches>\n${demarches}\n</base_demarches>`;
 
@@ -93,6 +94,46 @@ app.post('/chat', async (req, res) => {
   } catch (err) {
     console.error('JSON invalide :', err.message, '\n', texte);
     return res.status(502).json({ erreur: "La réponse de l'assistant est invalide. Réessaie." });
+  }
+});
+
+app.post('/fiche', async (req, res) => {
+  const { nom_complet, ville, reponse } = req.body ?? {};
+  const nom = typeof nom_complet === 'string' ? nom_complet.trim() : '';
+  const lieu = typeof ville === 'string' ? ville.trim() : '';
+
+  if (!nom || !lieu) {
+    return res.status(400).json({ erreur: 'Écris ton nom complet et ta ville pour créer la fiche.' });
+  }
+  if (nom.length > 100 || lieu.length > 100) {
+    return res.status(400).json({ erreur: 'Le nom ou la ville est trop long (100 caractères maximum).' });
+  }
+  if (
+    !reponse ||
+    reponse.peut_generer_fiche !== true ||
+    !Array.isArray(reponse.documents) ||
+    !reponse.documents.length ||
+    typeof reponse.reponse !== 'string'
+  ) {
+    return res.status(400).json({ erreur: "La fiche n'est pas disponible pour cette réponse." });
+  }
+
+  // Nom de la démarche : toujours depuis demarches.json
+  const demarche = base.demarches.find((d) => d.id === reponse.demarche_id);
+  if (!demarche) {
+    return res.status(400).json({ erreur: 'Démarche inconnue : impossible de créer la fiche.' });
+  }
+
+  try {
+    const fichier = await genererFiche({ nom_complet: nom, ville: lieu, reponse, nomDemarche: demarche.nom_fr });
+    res.set({
+      'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'Content-Disposition': `attachment; filename="fiche-dalil-${demarche.id}.docx"`,
+    });
+    return res.send(fichier);
+  } catch (err) {
+    console.error('Erreur fiche :', err);
+    return res.status(500).json({ erreur: 'Impossible de créer la fiche. Réessaie.' });
   }
 });
 
