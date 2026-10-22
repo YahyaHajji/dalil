@@ -98,6 +98,13 @@ export class App {
     return texte.split(PRIX).filter(Boolean).map((t) => ({ texte: t, prix: PRIX.test(t) }));
   }
 
+  // Affiche la question seulement si elle n'est pas déjà dans la réponse (sans espaces ni casse)
+  protected afficherQuestion(d: DalilReponse) {
+    if (!d.question_de_clarification) return false;
+    const normaliser = (t: string) => t.replace(/\s+/g, '').toLowerCase();
+    return !normaliser(d.reponse).includes(normaliser(d.question_de_clarification));
+  }
+
   protected domaine(lien: string) {
     try {
       return new URL(lien).hostname.replace(/^www\./, '');

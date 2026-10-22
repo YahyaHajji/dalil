@@ -29,7 +29,7 @@
           <div class="reponse" [attr.dir]="d.langue === 'ar' ? 'rtl' : null">
             <div class="carte carte-reponse">
               <p>@for (s of segments(d.reponse); track $index) {<span [class.prix]="s.prix">{{ s.texte }}</span>}</p>
-              @if (d.question_de_clarification) {
+              @if (afficherQuestion(d)) {
                 <p class="question">{{ d.question_de_clarification }}</p>
               }
             </div>
