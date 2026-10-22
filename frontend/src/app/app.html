@@ -60,6 +60,9 @@
         </div>
       }
     }
+    @if (envoiEnCours() || telechargementEnCours()) {
+      <p class="chargement">Dalil kaykteb...</p>
+    }
   </section>
 
   @if (derniereReponse()) {
@@ -75,6 +78,6 @@
 
   <form class="saisie" (ngSubmit)="envoyer()">
     <input name="texte" [(ngModel)]="texte" placeholder="Écris ta question..." autocomplete="off" />
-    <button type="submit" [disabled]="envoiEnCours() || !texte().trim()">Envoyer</button>
+    <button type="submit" [disabled]="envoiEnCours() || telechargementEnCours() || !texte().trim()">Envoyer</button>
   </form>
 </main>

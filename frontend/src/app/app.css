@@ -115,6 +115,13 @@ h1 {
   margin-top: 0;
 }
 
+.chargement {
+  align-self: flex-start;
+  color: #666;
+  font-style: italic;
+  margin: 0;
+}
+
 .saisie {
   display: flex;
   gap: 8px;

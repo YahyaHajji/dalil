@@ -55,7 +55,7 @@ export class App {
 
   async envoyer() {
     const message = this.texte().trim();
-    if (!message || this.envoiEnCours()) return;
+    if (!message || this.envoiEnCours() || this.telechargementEnCours()) return;
 
     this.messages.update((m) => [...m, { role: 'user', texte: message }]);
     this.texte.set('');
