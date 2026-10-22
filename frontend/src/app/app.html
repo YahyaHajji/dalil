@@ -1,0 +1,21 @@
+<main class="page">
+  <h1>Dalil</h1>
+
+  <p class="avertissement">Informations indicatives. Vérifie toujours sur le site officiel.</p>
+
+  <section class="messages">
+    @for (m of messages(); track $index) {
+      <div class="message" [class]="m.role">
+        <p>{{ m.texte }}</p>
+        @if (m.data?.question_de_clarification) {
+          <p>{{ m.data?.question_de_clarification }}</p>
+        }
+      </div>
+    }
+  </section>
+
+  <form class="saisie" (ngSubmit)="envoyer()">
+    <input name="texte" [(ngModel)]="texte" placeholder="Écris ta question..." autocomplete="off" />
+    <button type="submit" [disabled]="envoiEnCours() || !texte().trim()">Envoyer</button>
+  </form>
+</main>

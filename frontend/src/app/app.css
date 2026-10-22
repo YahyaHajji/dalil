@@ -1,0 +1,69 @@
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 16px;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  color: #1b5e20;
+  margin-bottom: 4px;
+}
+
+.avertissement {
+  background: #fff8e1;
+  border: 1px solid #ffe082;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.message {
+  padding: 8px 12px;
+  border-radius: 8px;
+  max-width: 85%;
+  unicode-bidi: plaintext;
+}
+
+.message p {
+  margin: 4px 0;
+  white-space: pre-wrap;
+}
+
+.user {
+  align-self: flex-end;
+  background: #e8f5e9;
+}
+
+.assistant {
+  align-self: flex-start;
+  background: #f1f1f1;
+}
+
+.erreur {
+  align-self: flex-start;
+  background: #ffebee;
+  color: #b71c1c;
+}
+
+.saisie {
+  display: flex;
+  gap: 8px;
+}
+
+.saisie input {
+  flex: 1;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.saisie button {
+  padding: 8px 16px;
+  font-size: 16px;
+}

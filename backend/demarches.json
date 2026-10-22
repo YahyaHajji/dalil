@@ -1,0 +1,166 @@
+{
+  "version": "2026-10-21",
+  "avertissement_global": "Informations indicatives. Vérifie toujours sur le site officiel avant de te déplacer.",
+  "demarches": [
+    {
+      "id": "passeport",
+      "nom_fr": "Passeport biométrique (majeur, au Maroc)",
+      "mots_cles": ["passeport", "paspor", "jawaz safar", "jawaz", "passport", "nbdel passeport", "renouvellement passeport", "جواز السفر", "جواز", "باسبور", "تجديد جواز السفر"],
+      "documents": [
+        "Formulaire de demande de passeport biométrique, rempli, daté et signé",
+        "Photocopie de la CNIE en cours de validité (ou du récépissé de dépôt/renouvellement de la CNIE)",
+        "Photo d'identité conforme",
+        "Code e-timbre à 16 chiffres (acheté en ligne) : 500 DH",
+        "En cas de renouvellement : l'ancien passeport"
+      ],
+      "etapes": [
+        "Acheter l'e-timbre (500 DH) en ligne sur passeport.ma ou tax.gov.ma, généralement par carte bancaire, et noter le code à 16 chiffres",
+        "Remplir le formulaire sur passeport.ma, puis l'imprimer (papier A4)",
+        "Rassembler les documents",
+        "Déposer le dossier en personne à l'annexe administrative ou au caïdat du lieu de résidence"
+      ],
+      "prix_e_timbre": "500 DH, pour la délivrance du passeport et pour chaque prorogation (source indiquée : site de la DGI, tax.gov.ma)",
+      "exoneration": "Les enfants de Marocains résidant à l'étranger (MRE) de moins de 18 ans sont exonérés du droit de timbre (délivrance ou prorogation).",
+      "lien_officiel": "https://www.passeport.ma",
+      "a_verifier": [
+        "Nombre de photos demandées (selon le guichet)",
+        "Délai de délivrance"
+      ]
+    },
+    {
+      "id": "cnie",
+      "nom_fr": "CNIE (carte nationale d'identité électronique)",
+      "mots_cles": ["cnie", "cin", "carte nationale", "carta watania", "bitaqa", "carte d'identité", "identity card", "بطاقة التعريف الوطنية", "البطاقة الوطنية", "بطاقة التعريف"],
+      "cas": [
+        {
+          "nom": "Première demande (obligatoire à partir de 16 ans)",
+          "documents": [
+            "Certificat de résidence (délivré par la police en ville, par la Gendarmerie Royale en milieu rural, ou par l'autorité locale à défaut)",
+            "4 photos d'identité récentes (moins de 6 mois), conformes aux normes",
+            "Droits de timbre : 75 DH (adulte, ou mineur de 12 ans et plus)",
+            "Copie de la page du livret de famille (avec le livret), OU copie intégrale du registre de l'état civil, OU copie de l'acte de naissance (ces deux derniers : moins de 3 mois, en arabe et en latin)",
+            "Si nationalité marocaine acquise : original ou copie certifiée du document de naturalisation",
+            "Certificat de nationalité, seulement en cas de doute sur la nationalité"
+          ]
+        },
+        {
+          "nom": "Renouvellement",
+          "documents": [
+            "Certificat de résidence (police en ville, Gendarmerie Royale en milieu rural, ou autorité locale à défaut)",
+            "4 photos d'identité récentes (moins de 6 mois), conformes aux normes",
+            "Droits de timbre : 75 DH (adulte, ou mineur de 12 ans et plus)",
+            "Rendre l'ancienne CNIE"
+          ],
+          "validite_nouvelle_carte": "10 ans à partir de 12 ans ; 7 ans maximum pour un mineur de moins de 12 ans (la carte expire à ses 12 ans)"
+        },
+        {
+          "nom": "Perte, vol ou détérioration",
+          "documents": [
+            "Déclaration sur l'honneur écrite par la personne (ou son représentant légal pour un mineur), OU signature du formulaire préparé à l'avance par la DGSN"
+          ]
+        },
+        {
+          "nom": "Mineur (moins de 16 ans, demande du représentant légal)",
+          "documents": [
+            "Présence obligatoire du mineur avec son représentant légal",
+            "Copie de la CNIE du représentant légal",
+            "Document qui prouve sa qualité de représentant légal",
+            "Droits de timbre : 50 DH si le mineur a moins de 12 ans, 75 DH à partir de 12 ans"
+          ]
+        },
+        {
+          "nom": "Ajouter la mention « épouse », « veuve » ou « veuf »",
+          "documents": [
+            "Copie conforme de l'acte de mariage",
+            "Copie de l'acte de décès du conjoint (pour veuve ou veuf)",
+            "Copie de l'acte de naissance du conjoint, en arabe et en latin"
+          ]
+        },
+        {
+          "nom": "Changement de nom, de date de naissance, ou correction du lieu de naissance, du numéro d'acte ou de la filiation",
+          "documents": [
+            "Documents administratifs ou judiciaires qui prouvent le changement"
+          ]
+        }
+      ],
+      "etapes": [
+        "Faire la pré-demande sur cnie.ma (le formulaire rempli peut être apporté au centre)",
+        "Prendre rendez-vous sur cnie.ma",
+        "Se présenter au rendez-vous au centre d'enregistrement des données identitaires avec les documents",
+        "Suivre l'avancement de la carte sur cnie.ma"
+      ],
+      "lieu_depot": "Centres d'enregistrement des données identitaires (rattachés aux préfectures de police, à la sûreté régionale et aux commissariats régionaux). Pour les Marocains résidant à l'étranger : service de la carte nationale au consulat ou guichets MRE dans les centres du Maroc.",
+      "demarches_liees": ["certificat_residence", "acte_naissance"],
+      "lien_officiel": "https://www.cnie.ma",
+      "a_verifier": [
+        "Vérifier que la liste est à jour sur cnie.ma (date de mise à jour du texte inconnue)",
+        "Délai de délivrance",
+        "Perte ou vol : les autres pièces du renouvellement sont-elles aussi demandées ?"
+      ]
+    },
+    {
+      "id": "acte_naissance",
+      "nom_fr": "Copie intégrale de l'acte de naissance",
+      "mots_cles": ["acte de naissance", "3a9d lizdiad", "3akd lizdiad", "copie intégrale", "extrait", "watiqa", "birth certificate", "عقد الازدياد", "رسم الولادة", "شهادة الميلاد"],
+      "documents": [
+        "Copie de la CNIE ou du passeport marocain",
+        "Informations : nom, prénom, date et lieu de naissance",
+        "Précision de l'usage du document (passeport, mariage, succession...)"
+      ],
+      "etapes": [
+        "Aller sur watiqa.ma et remplir le formulaire de demande",
+        "Joindre la copie de la pièce d'identité",
+        "Payer les frais en ligne",
+        "Recevoir le document par courrier recommandé"
+      ],
+      "conseil": "Demande la copie intégrale et pas l'extrait : la plupart des administrations exigent la copie intégrale.",
+      "lien_officiel": "https://www.watiqa.ma",
+      "a_verifier": [
+        "Frais actuels (une source de 2015 parle de 20 DH minimum)",
+        "Délai (une source parle d'environ 1 mois par courrier)"
+      ]
+    },
+    {
+      "id": "cnss",
+      "nom_fr": "CNSS : attestations pour un salarié (affiliation, travail, salaire...)",
+      "mots_cles": ["cnss", "damancom", "mon damane", "attestation de travail", "attestation d'affiliation", "attestation de salaire", "damane", "الضمان الاجتماعي", "الصندوق الوطني للضمان الاجتماعي"],
+      "documents": [
+        "Numéro d'immatriculation CNSS (sur le bulletin de paie ou la carte CNSS)",
+        "CIN",
+        "Email personnel"
+      ],
+      "etapes": [
+        "S'inscrire sur le portail Mon DAMANE de la CNSS (cnss.ma)",
+        "Se connecter avec son compte",
+        "Choisir l'attestation voulue",
+        "Télécharger l'attestation (elle a un QR code de vérification)"
+      ],
+      "types_attestations": ["travail", "affiliation", "non-affiliation", "salaire annuel", "trimestres cotisés", "radiation"],
+      "lien_officiel": "https://www.cnss.ma",
+      "a_verifier": [
+        "Chemin exact du menu sur le portail (il peut changer)",
+        "Durée de validité d'une attestation"
+      ]
+    },
+    {
+      "id": "certificat_residence",
+      "nom_fr": "Certificat de résidence (chahada sokna)",
+      "mots_cles": ["certificat de résidence", "chahada sokna", "chahadat sokna", "sokna", "résidence", "attestation de domicile", "residence certificate", "شهادة السكنى", "شهادة الإقامة"],
+      "documents": [
+        "Un justificatif de logement selon ta situation : certificat de propriété (propriétaire), facture d'électricité ou d'eau, ou engagement écrit du propriétaire"
+      ],
+      "etapes": [
+        "Faire la demande en ligne sur wraqi.ma, ou se rendre à l'arrondissement de police / au caïdat du quartier",
+        "Présenter les documents justificatifs",
+        "Récupérer le certificat (document électronique)"
+      ],
+      "validite": "3 mois à partir de la date de délivrance",
+      "delai": "48 à 72 heures maximum selon la DGSN",
+      "lien_officiel": "https://www.wraqi.ma",
+      "a_verifier": [
+        "Liste complète des pièces (CIN probablement demandée, non confirmée)",
+        "Quelle autorité est compétente selon ton quartier"
+      ]
+    }
+  ]
+}
