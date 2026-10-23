@@ -1,1 +1,294 @@
-/* You can add global styles to this file, and also import other style files */
+/* Système de design Dalil : jetons, base, éléments partagés.
+   Les composants utilisent uniquement ces variables. */
+
+:root {
+  /* Couleurs : thème clair */
+  --c-primary: #245b3a;
+  --c-primary-strong: #19452d;
+  --c-primary-soft: #e5f1e7;
+  --c-on-primary: #ffffff;
+  --c-bg: #fafaf6;
+  --c-surface: #ffffff;
+  --c-surface-2: #f3f5f0;
+  --c-text: #202820;
+  --c-text-2: #667267;
+  --c-border: #e1e7df;
+  --c-border-strong: #c9d3c7;
+  --c-accent: #b86b4b;
+  --c-accent-text: #96502f;
+  --c-accent-soft: #f8ece6;
+  --c-danger: #a8321f;
+  --c-danger-soft: #fbeae6;
+  --c-focus: #245b3a;
+  --c-motif: #245b3a;
+
+  /* Typographie */
+  --font-sans: 'Inter', 'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, Roboto,
+    'Helvetica Neue', Arial, 'Noto Sans Arabic', Tahoma, sans-serif;
+  --font-arabic: 'Noto Sans Arabic', 'Segoe UI', 'Geeza Pro', Tahoma, sans-serif;
+  --fs-display: clamp(1.625rem, 1.2rem + 1.6vw, 2.25rem);
+  --fs-title: 1.125rem;
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+  --fs-xs: 0.8125rem;
+  --lh-body: 1.6;
+
+  /* Espacements (base 4 px) */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-12: 48px;
+
+  /* Formes et élévation */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 20px;
+  --r-full: 999px;
+  --shadow-sm: 0 1px 2px rgb(25 69 45 / 6%);
+  --shadow-md: 0 1px 2px rgb(25 69 45 / 6%), 0 6px 20px -8px rgb(25 69 45 / 14%);
+
+  /* Mise en page */
+  --content-max: 840px;
+  --header-h: 60px;
+  --tap: 44px;
+  --dur: 180ms;
+
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --c-primary: #83c994;
+  --c-primary-strong: #a3dbb0;
+  --c-primary-soft: #263c2d;
+  --c-on-primary: #0f1a12;
+  --c-bg: #111713;
+  --c-surface: #1a231d;
+  --c-surface-2: #222d25;
+  --c-text: #f0f4ef;
+  --c-text-2: #b1bdb2;
+  --c-border: #344238;
+  --c-border-strong: #46574b;
+  --c-accent: #d28a6b;
+  --c-accent-text: #e3a487;
+  --c-accent-soft: #33261f;
+  --c-danger: #f19a88;
+  --c-danger-soft: #3a211c;
+  --c-focus: #83c994;
+  --c-motif: #83c994;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 30%);
+  --shadow-md: 0 1px 2px rgb(0 0 0 / 30%), 0 8px 24px -10px rgb(0 0 0 / 55%);
+
+  color-scheme: dark;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --header-h: 52px;
+  }
+}
+
+/* Base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--c-text);
+  background: var(--c-bg);
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+/* L'arabe a besoin d'une police adaptée et d'un interligne plus grand */
+:lang(ar) {
+  font-family: var(--font-arabic);
+}
+
+:lang(ar) p,
+:lang(ar) li {
+  line-height: 1.85;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+a {
+  color: var(--c-primary);
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--c-primary-soft);
+}
+
+/* Éléments partagés */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.icon {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Icônes directionnelles (flèches) en mode droite à gauche */
+.flip-rtl:dir(rtl) {
+  transform: scaleX(-1);
+}
+
+/* Bouton icône et bouton discret, partagés par plusieurs composants */
+.btn-icon,
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  min-height: var(--tap);
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--c-text-2);
+  transition:
+    background-color var(--dur) ease,
+    color var(--dur) ease,
+    border-color var(--dur) ease;
+}
+
+.btn-icon {
+  width: var(--tap);
+  padding: 0;
+}
+
+.btn-ghost {
+  padding: 0 var(--s-3);
+  font-size: var(--fs-small);
+  font-weight: 500;
+}
+
+.btn-icon:hover:not(:disabled),
+.btn-ghost:hover:not(:disabled) {
+  background: var(--c-surface-2);
+  color: var(--c-text);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  min-height: var(--tap);
+  padding: 0 var(--s-4);
+  border: none;
+  border-radius: var(--r-md);
+  background: var(--c-primary);
+  color: var(--c-on-primary);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  text-decoration: none;
+  transition:
+    background-color var(--dur) ease,
+    opacity var(--dur) ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--c-primary-strong);
+}
+
+.btn-primary:disabled {
+  opacity: 0.45;
+}
+
+/* Champs de formulaire */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--c-text-2);
+}
+
+.field input {
+  min-height: var(--tap);
+  padding: 0 var(--s-3);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  color: var(--c-text);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--r-sm);
+  transition: border-color var(--dur) ease;
+}
+
+.field input:focus-visible {
+  outline-offset: 0;
+  border-color: var(--c-primary);
+}
+
+/* Prix mis en évidence dans les réponses */
+.prix {
+  font-weight: 600;
+  color: var(--c-primary);
+  background: var(--c-primary-soft);
+  border-radius: 4px;
+  padding: 0 4px;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

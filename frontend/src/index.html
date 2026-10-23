@@ -1,11 +1,37 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr" dir="ltr">
 <head>
   <meta charset="utf-8">
-  <title>Dalil</title>
+  <title>Dalil · دليل</title>
   <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="description" content="Dalil, ton guide des démarches administratives au Maroc, en darija, français, arabe ou anglais.">
+  <meta name="theme-color" content="#FAFAF6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111713" media="(prefers-color-scheme: dark)">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <!-- Applique le thème et la langue avant l'affichage (évite un flash) -->
+  <script>
+    (function () {
+      var d = document.documentElement;
+      var theme = null, langue = null;
+      try {
+        theme = localStorage.getItem('dalil-theme');
+        langue = localStorage.getItem('dalil-langue');
+      } catch (e) {}
+      if (theme !== 'light' && theme !== 'dark') {
+        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      d.setAttribute('data-theme', theme);
+      if (langue === 'ar') {
+        d.lang = 'ar';
+        d.dir = 'rtl';
+      } else if (langue === 'en') {
+        d.lang = 'en';
+      } else if (langue === 'darija') {
+        d.lang = 'ary-Latn';
+      }
+    })();
+  </script>
 </head>
 <body>
   <app-root></app-root>
